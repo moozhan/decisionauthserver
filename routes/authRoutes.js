@@ -70,7 +70,7 @@ router.post('/login', (req, res) => {
           process.env.SECRET_KEY,
           { expiresIn: 31556926 }, // 1 year in seconds
           (err, token) => {
-            res.cookie('AuthToken', token, { httpOnly: true, secure: true, sameSite: 'None' });
+            res.cookie('AuthToken', token, { secure: true, sameSite: 'None' });
 
             const csrfToken = generateCsrfToken(); // Implement this function based on your CSRF token generation logic
             res.cookie('XSRF-TOKEN', csrfToken, { secure: true, sameSite: 'None' });

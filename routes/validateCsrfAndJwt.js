@@ -9,6 +9,14 @@ const validateCsrfAndJwt = (req, res, next) => {
     const csrfTokenFromCookie = req.cookies['XSRF-TOKEN'];
     const authToken = req.cookies['AuthToken'];
 
+    console.log(req.headers['x-csrf-token']);
+    console.log(csrfTokenFromCookie);
+    console.log(authToken);
+
+
+
+
+
     if (!csrfTokenFromCookie || !tokenFromHeader || csrfTokenFromCookie !== tokenFromHeader) {
         return res.status(403).send({ message: "Invalid CSRF token." });
     }
