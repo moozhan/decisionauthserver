@@ -25,10 +25,8 @@
                     password: document.getElementById('password').value
                 })
             }).then(response => response.json())
-            .then(data => res.redirect('/login'))
-            .catch(error =>  res.render('/register', {
-                errorMessage: 'Error creating player; the username already exist'
-            }));
+            .then(data => {window.location.href = '/login';})
+            .catch(error =>  {window.location.href = '/register';});
         });
     </script>
 </body>

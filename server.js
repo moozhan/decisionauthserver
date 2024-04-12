@@ -8,22 +8,17 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
 const cors = require('cors');
-const session = require('express-session');
-const flash = require('express-flash');
-
+const cookieParser = require('cookie-parser'); 
 const authRoutes = require('./routes/authRoutes');
 const gameRoutes = require('./routes/gameRoutes');
-const app = express();
 const PORT = process.env.PORT || 3000;
+const app = express();
+
 app.use(express.static(path.join(__dirname, './public')));
-app.set('view engine', 'ejs')
-app.set('views', __dirname + '/views')
-app.use(flash());
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false
-}))
+
+app.use(cookieParser());
+
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5500', 'https://decisionauthserver-92e41a504ad4.herokuapp.com', 'https://decisionserver-51961461dcec.herokuapp.com'];
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -35,21 +30,6 @@ app.use(cors({
   },
   credentials: true
 }));
-
-// List of allowed origins
-const allowedOrigins = ['http://localhost:5500', 'http://localhost:3000', 'http://localhost:3001'];
-
-// Dynamic CORS policy
-const dynamicCors = (req, callback) => {
-  const origin = req.header('Origin');
-  // Check if the incoming origin is in the list of allowed origins
-  if (allowedOrigins.includes(origin)) {
-    callback(null, { origin: true, credentials: true }); // Allow the request
-  } else {
-    callback(new Error('Not allowed by CORS')); // Reject the request
-  }
-};
-
 
 
 // Middleware
@@ -77,18 +57,17 @@ app.use('/api/auth', authRoutes);
 
 
 app.get('/', (req, res) => {
-  res.render('index')
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 })
 
 app.get('/login', (req, res) => {
-  res.render('login')
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
 })
 
 app.get('/register', (req, res) => {
-  res.render('register')
+  res.sendFile(path.join(__dirname, 'public', 'register.html'));
 })
 
-app.get('/games', (req, res) => {
-  res.render('games')
-})
+
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

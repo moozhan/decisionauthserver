@@ -17,12 +17,14 @@
                 ?.split('=')[1];
             return csrfToken;
         }
+        const csrfToken = getCsrfToken(); // Assuming you have a function to retrieve the CSRF token
+        console.log('CSRF Token:', csrfToken);
 
         fetch('http://localhost:3001/api/games', {
             method: 'GET',
             credentials: 'include', // Include credentials for cookies
             headers: {
-                'X-CSRF-Token': getCsrfToken(), // Add CSRF token in request headers
+                'X-CSRF-Token': csrfToken, // Ensure this header name matches what your server expects
             }
         })
         .then(response => {
@@ -56,7 +58,7 @@
             .then(response => {
                 if (response.ok) {
                     // Redirect to login page or show logged out state
-                    window.location.href = '/login';
+                    window.location.href = '/login.html';
                 } else {
                     throw new Error('Logout failed');
                 }
